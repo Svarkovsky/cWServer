@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Космическая Заставка Windows 98</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden; /* Чтобы скрыть полосы прокрутки */
+            background-color: #000; /* Черный фон, как в космосе */
+        }
+
+        #space {
+            position: fixed; /* Фиксированное положение, чтобы покрыть весь экран */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px; /* Размер звезды */
+            height: 2px;
+            background-color: white; /* Белый цвет звезд */
+            border-radius: 50%; /* Круглая форма */
+        }
+    </style>
+</head>
+<body>
+    <div id="space"></div>
+
+    <script>
+        const space = document.getElementById('space');
+        const numStars = 200; // Количество звезд
+
+        function createStar() {
+            const star = document.createElement('div');
+            star.classList.add('star');
+
+            // Случайное положение звезды
+            star.style.left = `${Math.random() * 100}vw`;
+            star.style.top = `${Math.random() * 100}vh`;
+
+            // Случайный размер и скорость (для эффекта глубины)
+            const size = Math.random() * 2 + 1; // Размер от 1px до 3px
+            const speed = Math.random() * 0.05 + 0.02; // Скорость движения
+
+            star.style.width = `${size}px`;
+            star.style.height = `${size}px`;
+            star.dataset.speed = speed; // Сохраняем скорость для анимации
+
+            space.appendChild(star);
+        }
+
+        // Создаем начальное количество звезд
+        for (let i = 0; i < numStars; i++) {
+            createStar();
+        }
+
+        function animateStars() {
+            const stars = document.querySelectorAll('.star');
+
+            stars.forEach(star => {
+                let currentLeft = parseFloat(star.style.left);
+                const speed = parseFloat(star.dataset.speed);
+
+                currentLeft -= speed; // Двигаем звезду влево
+
+                if (currentLeft < -10) { // Если звезда ушла за левый край
+                    currentLeft = 100; // Возвращаем на правый край
+                    star.style.top = `${Math.random() * 100}vh`; // Случайная вертикальная позиция
+                }
+
+                star.style.left = `${currentLeft}vw`;
+            });
+
+            requestAnimationFrame(animateStars); // Запускаем анимацию снова
+        }
+
+        animateStars(); // Начинаем анимацию
+    </script>
+</body>
+</html>
