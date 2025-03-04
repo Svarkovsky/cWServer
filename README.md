@@ -1,7 +1,7 @@
 # cWServer - Lightweight, Multithreaded Web Server
 
-[Перейти до української версії](#cWServer---Легкий-багатопотоковий-веб-сервер)  
-[前往中文版本](#cWServer---轻量级多线程Web服务器)
+[🇺🇦 Перейти до української версії](#cWServer---Легкий-багатопотоковий-веб-сервер)  
+[🇨🇳 前往中文版本](#cWServer---轻量级多线程Web服务器)
 
 <br> <div align="center"> <img src="unCs9b5zHjUiwcKv-generated_image.jpg" alt="cWServer Logo" style="width: 300px; height: auto;"> </div> <br>
 
@@ -156,8 +156,8 @@ Made with ❤️ for people.
 
 # cWServer - Легкий, багатопотоковий веб-сервер
 
-[Go to English version](#cWServer---Lightweight-Multithreaded-Web-Server)
-[前往中文版本](#cWServer---轻量级多线程Web服务器)
+[🇺🇸 Go to English version](#cWServer---Lightweight-Multithreaded-Web-Server)
+[🇨🇳 前往中文版本](#cWServer---轻量级多线程Web服务器)
 
 <br> <div align="center"> <img src="unCs9b5zHjUiwcKv-generated_image.jpg" alt="cWServer Logo" style="width: 300px; height: auto;"> </div> <br>
 
@@ -311,8 +311,8 @@ cWServer розповсюджується під ліцензією **GPLv2 аб
 
 # cWServer - 轻量级多线程Web服务器
 
-[前往英文版本](#cWServer---Lightweight-Multithreaded-Web-Server)  
-[前往乌克兰语版本](#cWServer---Легкий-багатопотоковий-веб-сервер)
+[🇺🇦 Перейти до української версії](#cWServer---Легкий-багатопотоковий-веб-сервер)
+[🇺🇸 Go to English version](#cWServer---Lightweight-Multithreaded-Web-Server)
 
 <br> <div align="center"> <img src="unCs9b5zHjUiwcKv-generated_image.jpg" alt="cWServer Logo" style="width: 300px; height: auto;"> </div> <br>
 
