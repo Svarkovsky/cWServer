@@ -1,4 +1,3 @@
-
 # cWServer - Lightweight, Multithreaded Web Server
 
 [Перейти до української версії](#cWServer---Легкий-багатопотоковий-веб-сервер)  
