@@ -1,7 +1,8 @@
 
 # cWServer - Lightweight, Multithreaded Web Server
 
-[Перейти до української версії](#cWServer---Легкий-багатопотоковий-веб-сервер)
+[Перейти до української версії](#cWServer---Легкий-багатопотоковий-веб-сервер)  
+[前往中文版本](#cWServer---轻量级多线程Web服务器)
 
 <br> <div align="center"> <img src="unCs9b5zHjUiwcKv-generated_image.jpg" alt="cWServer Logo" style="width: 300px; height: auto;"> </div> <br>
 
@@ -157,6 +158,7 @@ Made with ❤️ for people.
 # cWServer - Легкий, багатопотоковий веб-сервер
 
 [Go to English version](#cWServer---Lightweight-Multithreaded-Web-Server)
+[前往中文版本](#cWServer---轻量级多线程Web服务器)
 
 <br> <div align="center"> <img src="unCs9b5zHjUiwcKv-generated_image.jpg" alt="cWServer Logo" style="width: 300px; height: auto;"> </div> <br>
 
@@ -307,3 +309,157 @@ cWServer розповсюджується під ліцензією **GPLv2 аб
 
 Зроблено з ❤️ для людей.
 
+
+# cWServer - 轻量级多线程Web服务器
+
+[前往英文版本](#cWServer---Lightweight-Multithreaded-Web-Server)  
+[前往乌克兰语版本](#cWServer---Легкий-багатопотоковий-веб-сервер)
+
+<br> <div align="center"> <img src="unCs9b5zHjUiwcKv-generated_image.jpg" alt="cWServer Logo" style="width: 300px; height: auto;"> </div> <br>
+
+**cWServer** 是一个**使用POSIX标准库编写的轻量级多线程Web服务器**。它旨在高效地提供静态内容，并采用多线程架构处理并发连接。该服务器主要用于教育目的，展示Web服务器的基本原理，但也可用于简单的静态网站托管任务。代码的简洁性和标准库的使用使其易于理解、修改和移植到各种平台。
+
+## 主要功能
+
+- **提供静态文件：** cWServer高效地提供HTML、CSS、JavaScript、图像、视频和音频等静态文件。
+- **多线程架构：** 服务器使用POSIX线程（`pthreads`）在单独的线程中处理每个传入连接，确保在高并发负载下的良好性能。
+- **部分内容支持（Content-Range）：** 服务器支持`Content-Range` HTTP头，允许客户端分部分下载文件，这对于大文件或中断的连接非常有用。
+- **禁用缓存（Cache-Control: no-cache）：** 默认情况下，服务器禁用客户端缓存，以确保提供最新内容。
+- **目录列表：** 如果请求的是目录而不是特定文件，服务器会生成一个HTML页面，列出该目录中的文件。
+- **目录列表样式：** 可以选择目录列表的图标样式：
+  - **text：** 文本图标，如`[D]`、`[TXT]`、`[IMG]`等。
+  - **emoji：** Emoji图标，如`[📂]`、`[📝]`、`[🖼️]`等。
+  - **none：** 无图标。
+- **受保护的目录查看模式（以前称为Pseudo-FTP）：** 密码保护的目录查看模式。它使用密码作为路径前缀来限制对某些目录的访问。
+- **守护进程模式：** 可以在后台作为守护进程运行服务器。
+- **详细日志记录：** 服务器将访问日志和错误日志记录到标准错误输出（`stderr`）。
+- **URL编码请求处理：** 服务器正确处理请求中的URL编码字符。
+- **index.html处理：** 当请求目录时，服务器首先在该目录中查找`index.html`文件。如果找到，则提供该文件。如果不存在，则返回目录列表（除非启用了受保护的目录查看模式）。
+
+## 架构
+
+当前服务器版本针对**MIPS架构（74kc, mips16, mdsp, EB）**进行了优化。Makefile包含特定于此架构的编译器和链接器设置，包括：
+
+- `-march=74kc -mips16 -mdsp`：GCC选项，用于优化MIPS 74kc架构，使用MIPS16和DSP指令。
+- `-EB`：指定大端字节序（如果需要）。
+- 特定的链接和strip选项，以减少可执行文件的大小。
+
+**为其他架构构建：**
+
+要为其他架构构建，您可能需要修改`Makefile`中的`CFLAGS`和`LDFLAGS`变量。具体来说，您需要调整：
+
+- `-march=...`：指定目标架构。
+- `-mips16 -mdsp -EB`：如果您的架构不支持这些选项或不需要它们，请删除或修改。
+- `--sysroot=... -I...`：检查并更新系统include和lib目录的路径（如果它们在您的系统中不同）。
+
+**重要提示：** 用户可以根据GPLv2或更高版本的许可条款自由修改和分发服务器代码。
+
+## 入门
+
+### 编译
+
+要编译服务器，您需要C编译器（例如GCC）和`make`。
+
+1. 确保已安装必要的开发工具（GCC、make和其他必需的库）。
+2. 将`cwserver_v0.1a.c`和`Makefile`文件保存在同一目录中。
+3. 在该目录中打开终端。
+4. 运行`make`命令：
+
+    ```bash
+    make
+    ```
+
+    这将创建一个名为`cwserver`的可执行文件。
+
+### 运行
+
+要运行服务器，请使用以下命令：
+
+```bash
+./cwserver [选项]
+```
+
+### 选项
+
+- **`-p port`**  
+  指定要监听的端口。使用此选项设置Web服务器等待传入连接的端口。  
+  **默认值：** `8080`  
+  ```bash
+  ./cwserver -p 3000
+  ```
+- **`-w web_root`**  
+  指定Web服务器的根目录。设置文件系统上的目录，服务器将从该目录为客户端提供文件。  
+  **默认值：** 当前目录（`.`）  
+  ```bash
+  ./cwserver -w /var/www/html
+  ```
+- **`-d`**  
+  以守护进程模式（后台模式）运行服务器。使用此选项时，服务器将在后台运行，与终端分离。这对于长期运行服务器非常有用。  
+  ```bash
+  ./cwserver -d
+  ```
+- **`-h`**  
+  显示帮助信息，描述所有可用选项。使用此选项将打印所有可用命令行选项的帮助信息并终止服务器。  
+  ```bash
+  ./cwserver -h
+  ```
+- **`-v`**  
+  显示服务器版本信息。使用`-v`选项将打印`cwServer`的版本信息并终止服务器。  
+  ```bash
+  ./cwserver -v
+  ```
+- **`-i icon_style`**  
+  指定目录列表的图标样式。允许选择HTML目录列表中显示的图标样式。  
+  **可能的值：** `text`、`emoji`、`none`  
+  **默认值：** `text`  
+  ```bash
+  ./cwserver -i emoji
+  ```
+- **`-f ftp_password`**  
+  启用Pseudo-FTP模式，使用密码`ftp_password`。激活使用密码作为路径前缀的限制目录访问模式。  
+  ```bash
+  ./cwserver -f mypassword
+  ```
+
+## 使用示例
+
+1. 在端口`3000`上运行服务器，根目录为`/var/www/html`：  
+   ```bash
+   ./cwserver -p 3000 -w /var/www/html
+   ```
+
+2. 以守护进程模式运行服务器，使用`emoji`图标样式：  
+   ```bash
+   ./cwserver -d -i emoji
+   ```
+
+3. 显示帮助信息：  
+   ```bash
+   ./cwserver -h
+   ```
+
+4. 检查服务器版本：  
+   ```bash
+   ./cwserver -v
+   ```
+
+## 许可证
+
+cWServer根据**GPLv2或更高版本**的许可证分发。
+
+该项目根据**GNU通用公共许可证第2版**或任何更高版本（GPLv2+）的条款获得许可。
+
+您拥有以下全部自由：
+
+- 出于任何目的使用软件。
+- 研究软件的工作原理并适应您的需求。
+- 分发软件的副本。
+- 改进软件并发布您的改进。
+
+完整的许可证文本可在以下链接找到：[http://www.gnu.org/licenses/gpl.html](http://www.gnu.org/licenses/gpl.html)。
+
+## 作者
+
+**Ivan Svarkovsky** - [https://github.com/Svarkovsky](https://github.com/Svarkovsky)
+
+用心为人们打造。❤️
