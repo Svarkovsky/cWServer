@@ -1,8 +1,168 @@
+Ось оновлений `README.md` з англійською та українською версіями. Англійська версія йде першою, а українська — після неї. Також додано посилання вгорі сторінки для швидкої навігації.
+
+```markdown
+# cWServer - Lightweight, Multithreaded Web Server
+
+[Перейти до української версії](#cWServer---Легкий-багатопотоковий-веб-сервер)
+
+<br> <div align="center"> <img src="unCs9b5zHjUiwcKv-generated_image.jpg" alt="cWServer Logo" style="width: 300px; height: auto;"> </div> <br>
+
+**cWServer** is a **lightweight, multithreaded web server written in C using POSIX standard libraries**. It is designed to efficiently serve static content and features a multithreaded architecture to handle concurrent connections. The server is primarily intended for educational purposes, demonstrating the basic principles of web servers, but can also be used for simple static website hosting tasks. The simplicity of the code and the use of standard libraries make it easy to understand, modify, and port to various platforms.
+
+## Key Features
+
+- **Serving Static Files:** cWServer efficiently serves static files such as HTML, CSS, JavaScript, images, video, and audio.
+- **Multithreaded Architecture:** The server uses POSIX threads (`pthreads`) to handle each incoming connection in a separate thread, ensuring good performance under high concurrent loads.
+- **Partial Content Support (Content-Range):** The server supports `Content-Range` HTTP headers, allowing clients to download files in parts, which is useful for large files or interrupted connections.
+- **Caching Disabled (Cache-Control: no-cache):** By default, the server disables client-side caching to ensure the latest content is served.
+- **Directory Listing:** If a directory is requested instead of a specific file, the server generates an HTML page listing the files in that directory.
+- **Directory Listing Styling:** Ability to choose icon styles for directory listings:
+  - **text:** Text icons like `[D]`, `[TXT]`, `[IMG]`, etc.
+  - **emoji:** Emoji icons like `[📂]`, `[📝]`, `[🖼️]`, etc.
+  - **none:** No icons.
+- **Protected Directory View Mode (formerly Pseudo-FTP):** A password-protected directory view mode. It restricts access to certain directories using a password as a path prefix.
+- **Daemon Mode:** Ability to run the server in the background as a daemon.
+- **Detailed Logging:** The server logs access and errors to standard error output (`stderr`).
+- **URL-encoded Request Handling:** The server correctly handles URL-encoded characters in requests.
+- **index.html Handling:** When a directory is requested, the server first looks for an `index.html` file in that directory. If found, it serves the file. If not, it returns a directory listing (unless Protected Directory View is enabled).
+
+## Architecture
+
+The current build of the server is optimized for the **MIPS architecture (74kc, mips16, mdsp, EB)**. The Makefile contains compiler and linker settings specific to this architecture, including:
+
+- `-march=74kc -mips16 -mdsp`: GCC options for optimizing for the MIPS 74kc architecture with MIPS16 and DSP instructions.
+- `-EB`: Specifies big-endian byte order (if required).
+- Specific linking and strip options to reduce the executable file size.
+
+**Building for Other Architectures:**
+
+To build for other architectures, you may need to modify the `CFLAGS` and `LDFLAGS` variables in the `Makefile`. Specifically, you will need to adjust:
+
+- `-march=...`: Specify the target architecture for your processor.
+- `-mips16 -mdsp -EB`: Remove or modify these options if they are not supported by your architecture or are not needed.
+- `--sysroot=... -I...`: Check and update the paths to system include and lib directories if they differ in your system.
+
+**Important:** Users are free to modify and distribute the server code under the terms of the GPLv2 or later license.
+
+## Getting Started
+
+### Compilation
+
+To compile the server, you will need a C compiler (e.g., GCC) and `make`.
+
+1. Ensure you have the necessary development tools installed (GCC, make, and other required libraries).
+2. Save the `cwserver_v0.1a.c` and `Makefile` files in the same directory.
+3. Open a terminal in this directory.
+4. Run the `make` command:
+
+    ```bash
+    make
+    ```
+
+    This will create an executable file named `cwserver`.
+
+### Running
+
+To run the server, use the following command:
+
+```bash
+./cwserver [options]
+```
+
+### Options
+
+- **`-p port`**  
+  Specifies the port to listen on. Use this option to set the port on which the web server will wait for incoming connections.  
+  **Default:** `8080`  
+  ```bash
+  ./cwserver -p 3000
+  ```
+- **`-w web_root`**  
+  Specifies the web server's root directory. Sets the directory on the file system from which the server will serve files to clients.  
+  **Default:** Current directory (`.`)  
+  ```bash
+  ./cwserver -w /var/www/html
+  ```
+- **`-d`**  
+  Runs the server in daemon mode (background mode). When this option is used, the server runs in the background, detached from the terminal. This is useful for long-term server operation.  
+  ```bash
+  ./cwserver -d
+  ```
+- **`-h`**  
+  Displays a help message with a description of the options. Using this option will print a help message describing all available command-line options and terminate the server.  
+  ```bash
+  ./cwserver -h
+  ```
+- **`-v`**  
+  Displays the server version information. Using the `-v` option will print the `cwServer` version information and terminate the server.  
+  ```bash
+  ./cwserver -v
+  ```
+- **`-i icon_style`**  
+  Specifies the icon style for directory listings. Allows you to choose the style of icons displayed in the HTML directory listing.  
+  **Possible values:** `text`, `emoji`, `none`  
+  **Default:** `text`  
+  ```bash
+  ./cwserver -i emoji
+  ```
+- **`-f ftp_password`**  
+  Enables Pseudo-FTP mode with the password `ftp_password`. Activates restricted directory access using the password as a path prefix.  
+  ```bash
+  ./cwserver -f mypassword
+  ```
+
+## Usage Examples
+
+1. Running the server on port `3000` with the root directory `/var/www/html`:  
+   ```bash
+   ./cwserver -p 3000 -w /var/www/html
+   ```
+
+2. Running the server in daemon mode with `emoji` icon style:  
+   ```bash
+   ./cwserver -d -i emoji
+   ```
+
+3. Displaying help:  
+   ```bash
+   ./cwserver -h
+   ```
+
+4. Checking the server version:  
+   ```bash
+   ./cwserver -v
+   ```
+
+## License
+
+cWServer is distributed under the **GPLv2 or later** license.
+
+This project is licensed under the terms of the **GNU General Public License version 2** or any later version (GPLv2+).
+
+You have the full freedom to:
+
+- Use the software for any purpose.
+- Study how the software works and adapt it to your needs.
+- Distribute copies of the software.
+- Improve the software and publish your improvements.
+
+The full license text is available at: [http://www.gnu.org/licenses/gpl.html](http://www.gnu.org/licenses/gpl.html).
+
+## Author
+
+**Ivan Svarkovsky** - [https://github.com/Svarkovsky](https://github.com/Svarkovsky)
+
+Made with ❤️ for people.
+
+---
+
 # cWServer - Легкий, багатопотоковий веб-сервер
 
- <br> <div align="center"> <img src="unCs9b5zHjUiwcKv-generated_image.jpg" alt="cWServer Logo" style="width: 300px; height: auto;"> </div> <br>
+[Go to English version](#cWServer---Lightweight-Multithreaded-Web-Server)
 
-**cWServer** - це **легкий та багатопотоковий веб-сервер, написаний на мові програмування C з використанням стандартних бібліотек POSIX**. Він розроблений для ефективного обслуговування статичного контенту та має багатопотокову архітектуру для обробки одночасних з'єднань.  Сервер призначений в першу чергу для освітніх цілей, демонстрації основних принципів роботи веб-серверів, але може бути використаний і для простих задач обслуговування статичних веб-сайтів.  Простота коду та використання стандартних бібліотек роблять його легким для розуміння, модифікації та перенесення на різні платформи.
+<br> <div align="center"> <img src="unCs9b5zHjUiwcKv-generated_image.jpg" alt="cWServer Logo" style="width: 300px; height: auto;"> </div> <br>
+
+**cWServer** - це **легкий та багатопотоковий веб-сервер, написаний на мові програмування C з використанням стандартних бібліотек POSIX**. Він розроблений для ефективного обслуговування статичного контенту та має багатопотокову архітектуру для обробки одночасних з'єднань. Сервер призначений в першу чергу для освітніх цілей, демонстрації основних принципів роботи веб-серверів, але може бути використаний і для простих задач обслуговування статичних веб-сайтів. Простота коду та використання стандартних бібліотек роблять його легким для розуміння, модифікації та перенесення на різні платформи.
 
 ## Основні можливості
 
@@ -85,7 +245,7 @@
   ```
 - **`-h`**  
   Показує довідкове повідомлення з описом опцій. Використання цієї опції виведе на екран довідку з описом всіх доступних опцій командного рядка та завершить роботу сервера.  
- ```bash
+  ```bash
   ./cwserver -h
   ```
 - **`-v`**  
@@ -95,8 +255,8 @@
   ```
 - **`-i icon_style`**  
   Вказує стиль іконок для списку директорій. Дозволяє вибрати стиль відображення іконок у HTML-списку директорій.  
- **Можливі значення:** `text`, `emoji`, `none`  
- **За замовчуванням:** `text`  
+  **Можливі значення:** `text`, `emoji`, `none`  
+  **За замовчуванням:** `text`  
   ```bash
   ./cwserver -i emoji
   ```
@@ -105,6 +265,7 @@
   ```bash
   ./cwserver -f mypassword
   ```
+
 ## Приклади використання
 
 1. Запуск сервера на порту `3000` з кореневою директорією `/var/www/html`:  
@@ -126,30 +287,6 @@
    ```bash
    ./cwserver -v
    ```
-## Приклади запуску
-
-- **Запуск сервера на порту 8089, використовуючи поточну директорію як web root, зі стилем іконок emoji:**
-
-    ```bash
-    ./cwserver -p 8089 -w . -i emoji
-    ```
-
-- **Запуск сервера в режимі демона на порту 80, використовуючи `/var/www` як web root:**
-
-    ```bash
-    ./cwserver -p 80 -w /var/www -d
-    ```
-
-- **Запуск сервера з увімкненим режимом Protected Directory View та паролем `secret`:**
-
-    ```bash
-    ./cwserver -p 8080 -f secret
-    ```
-Ця команда запустить сервер на порту 8080 з активованим режимом Pseudo-FTP. Пароль для доступу до захищених директорій буде "secret".
-
-Важливо: Режим Pseudo-FTP
-
-**Важливо:** При використанні режиму Pseudo-FTP, запити до директорій, захищених паролем, повинні починатися з префікса шляху, що включає пароль. Наприклад, якщо пароль "secret", і ви хочете отримати доступ до директорії /ftp/private, URL у браузері повинен виглядати як /secret/ftp/private. Сервер автоматично видалить префікс пароля перед обробкою запиту до файлової системи.
 
 ## Ліцензія
 
@@ -171,11 +308,4 @@ cWServer розповсюджується під ліцензією **GPLv2 аб
 **Ivan Svarkovsky** - [https://github.com/Svarkovsky](https://github.com/Svarkovsky)
 
 Зроблено з ❤️ для людей.
-
-
-
-
-
-
-
-
+```
